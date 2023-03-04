@@ -8,5 +8,6 @@ static_assert(cti::type_info<char>() != cti::type_info_decayed<const int>(), "so
 
 std::unordered_map<cti::type_info_base, cti::string> map;
 map[cti::type_info<int>()] = cti::type_info<int>().name();
+
 std::cout << map[cti::type_info<int>()] << std::endl; // should output 'int'
 ```
