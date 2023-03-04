@@ -3,11 +3,13 @@ The constexpr type_info library.
 
 Example usage:
 ```
-static_assert(cti::type_info<char>() == cti::type_info_decayed<const char>(), "something really bad happened...");
-static_assert(cti::type_info<char>() != cti::type_info_decayed<const int>(), "something really bad happened2...");
+  #include "cti.h"
 
-std::unordered_map<cti::type_info_base, cti::string> map;
-map[cti::type_info<int>()] = cti::type_info<int>().name();
+	static_assert(cti::type_info<char>() == cti::type_info_decayed<const char>(), "something really bad happened...");
+	static_assert(cti::type_info<char>() != cti::type_info_decayed<const int>(), "something really bad happened2...");
 
-std::cout << map[cti::type_info<int>()] << std::endl; // should output 'int'
+	std::unordered_map<cti::type_info_base, cti::hash_t> map;
+	map[cti::type_info<int>()] = cti::type_info<int>().hash();
+
+	std::cout << map[cti::type_info<int>()] << std::endl; // should output the hash of int (3143511548502526014 on windows)
 ```
