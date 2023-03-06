@@ -6,7 +6,7 @@ namespace cti
 {
 	namespace detail
 	{
-		template <typename T>
+		template <typename... T>
 		constexpr string full_name()
 		{
 #if defined(__clang__) || defined(__GNUC__)
@@ -14,27 +14,27 @@ namespace cti
 #elif defined(_MSC_VER)
 			return __FUNCSIG__;
 #else
-	#ifdef __func__
+#ifdef __func__
 			return __func__;
-	#else
-		#error "Unknown Compiler, cannot use the cti!"
-	#endif
+#else
+#error "Unknown Compiler, cannot use the cti!"
+#endif
 #endif
 		}
 
-		template <typename T>
+		template <typename... T>
 		constexpr string type_name()
 		{
-			constexpr string full = full_name<T>();
+			constexpr string full = full_name<T...>();
 			constexpr string::size_type start = full.find('<') + 1;
 			constexpr string::size_type end = full.find_reverse('>');
 			return { full.str + start, full.str + end };
 		}
 
-		template <typename T>
+		template <typename... T>
 		constexpr string type_name_decayed()
 		{
-			return type_name<std::decay_t<T>>();
+			return type_name<std::decay_t<T...>>();
 		}
 	}
 
@@ -111,10 +111,10 @@ namespace cti
 
 	using tib = type_info_base;
 
-	template <typename T>
+	template <typename... T>
 	constexpr type_info_base type_info()
 	{
-		return { detail::type_name<T>() };
+		return { detail::type_name<T...>() };
 	};
 
 	constexpr type_info_base type_info(const cti::string& str)
@@ -122,10 +122,10 @@ namespace cti
 		return { str };
 	}
 
-	template <typename T>
+	template <typename... T>
 	constexpr type_info_base type_info_decayed()
 	{
-		return { detail::type_name_decayed<T>() };
+		return { detail::type_name_decayed<T...>() };
 	};
 }
 
