@@ -2,6 +2,8 @@
 
 #include "cti_hash.h"
 
+#include <type_info>
+
 namespace cti
 {
 	namespace detail
