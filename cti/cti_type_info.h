@@ -2,7 +2,7 @@
 
 #include "cti_hash.h"
 
-#include <type_info>
+#include <type_traits>
 
 namespace cti
 {
