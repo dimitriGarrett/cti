@@ -1,22 +1,26 @@
 #pragma once
 
 #include "cti_string.h"
+#include <cstdint>
 
 namespace cti
 {
-    using hash_t = unsigned long long;
+    using hash_t = uint64_t;
 
+    //polynomial rolling hash function
     static constexpr hash_t hash(const cti::string& str)
     {
-        static_assert(sizeof(hash_t) == 8);
-        // FNV-1a 64 bit algorithm
-        size_t result = 0xcbf29ce484222325; // FNV offset basis
+        constexpr hash_t p = 255; //255 different characters in char
+        constexpr hash_t m = 575237319495109; // m
+        hash_t res = 0; //accumulator
+        hash_t pw = 1;
 
-        for (char c : str) {
-            result ^= c;
-            result *= 1099511628211; // FNV prime
+        for (string::size_type i = 0; i < str.size; ++i)
+        {
+            res += (str[i] * pw) % m;
+            pw *= p;
         }
 
-        return result;
+        return res;
     }
 }

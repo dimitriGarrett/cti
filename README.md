@@ -5,11 +5,27 @@ Example usage:
 ```
 #include "cti.h"
 
-static_assert(cti::type_info<char>() == cti::type_info_decayed<const char>(), "something really bad happened...");
-static_assert(cti::type_info<char>() != cti::type_info_decayed<const int>(), "something really bad happened2...");
+int main()
+{
+    // constexpr string example
+    constexpr cti::string str = "hello!";
 
-std::unordered_map<cti::type_info_base, cti::hash_t> map;
-map[cti::type_info<int>()] = cti::type_info<int>().hash();
+    static_assert(str.size == 6);
+    static_assert(cti::type_info(str).hash() == cti::type_info("hello!").hash());
 
-std::cout << map[cti::type_info<int>()] << std::endl; // should output the hash of int (3143511548502526014 on msvc)
+    // constexpr type_info example
+    constexpr cti::type_info_base info = cti::type_info<int>();
+
+    static_assert(info.hash() == cti::type_info<int>().hash());
+    static_assert(info.name() == "int");
+
+    std::unordered_map<cti::type_info_base, int> map;
+
+    map[cti::type_info<int>()] = 200;
+    map[cti::type_info<short>()] = 100;
+    map[cti::type_info("nice")] = 0;
+
+    std::cout << map.at(cti::type_info("nice")) << std::endl; // outputs 0 
+}
+
 ```

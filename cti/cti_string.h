@@ -48,6 +48,11 @@ namespace cti
 			return true;
 		}
 
+		constexpr char operator[] (size_type index) const
+		{
+			return str[index];
+		}
+
 		const char* str;
 		size_type size;
 
